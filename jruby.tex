@@ -105,9 +105,9 @@
 \end{frame}
 \begin{frame}\frametitle{Threads}
   The dreaded Global Interpreter Lock!
-  \begin{centering}
+  \begin{center}
   \includegraphics[scale=.5]{diagrams/ruby-gil.png}
-  \end{centering}
+  \end{center}
   But... Rubinius does not have a GIL either....
 
 
@@ -162,6 +162,57 @@ num_iterations.times do |i|
   tasks.each(&:get)
 end
 \end{lstlisting}
+\end{frame}
+\begin{frame}\frametitle{Thread Demo}
+  \begin{center}
+  {\Huge DEMO}
+  \end{center}
+\end{frame}
+\begin{frame}\frametitle{WARs and BCCs}
+  ...or ``How to use Rails in a 6000+ person O\&G company''.
+  \begin{itemize}
+    \item JRuby on Rails works. Started using it at 2.x, did some 3, haven't tried 4.
+    \item A WAR is a Web ARchive and is how Java Web apps are deployed on a server, e.g. Tomcat.
+    \item \url{github.com/jruby/warbler} will package your app into a warfile
+  \end{itemize}
+  When you are in a large conservative company, all of the above is a GOOD THING!
+\end{frame}
+\begin{frame}\frametitle{JRuby on Rails}
+  Need to do a few things....
+  \begin{itemize}
+    \item Use \texttt{therubyrhino} instead of \texttt{therubyracer}
+    \item Use \texttt{activerecord-jdbc-adapter} plus db of choice.
+    \item Check the jruby wiki for alternatives if using gems with C-Extensions.
+    \item Can use on Heroku!
+  \end{itemize}
+  Of course, must have the capability to get deploy to happen by just supplying a WAR. (Bigger
+  companies may insist on building by themselves.)
+\end{frame}
+\begin{frame}\frametitle{and finally, swing, swing, swing}
+  Why? (no, really, why?)
+  \begin{itemize}
+    \item I had to convert a Haskell GTK based GUI to something people could build on their own.
+    \item It had to be cross platform.
+    \item I liked Ruby.
+  \end{itemize}
+  Options for swing:
+  \begin{itemize}
+    \item No framework - just use the swing classes and methods.
+    \item Rubeus - Adds block to the swing class constructors.
+    \item MonkeyBars - Encourages MVC design, has generators!
+  \end{itemize}
+\end{frame}
+\begin{frame}\frametitle{actually using it...}
+  \begin{itemize}
+    \item I use rake, rspec, cucumber, simplecov, flog, flay, rubocop and guard as part of the dev process.
+    \item I spent WAAAY too much time getting cucumber to work with swing.
+    \item \texttt{jruby --ng-server} can be your friend.
+    \end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Swing Demo}
+  \begin{center}
+  {\Huge DEMO}
+  \end{center}
 \end{frame}
 \end{document}
 
