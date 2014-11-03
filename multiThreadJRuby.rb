@@ -15,21 +15,18 @@ class CountMillion
   include Callable
   def call
     count = 0
-    1000000.times do
-      count += 1
-    end
+    1_000_000.times { count += 1 }
   end
 end
 
-num_iterations = ARGV[1].to_i #20
-num_threads = ARGV[0].to_i #4
+num_iterations = ARGV[1].to_i
+num_threads = ARGV[0].to_i
 # Create a thread pool
 executor = ThreadPoolExecutor.new(num_threads, # core_pool_treads
                                   num_threads, # max_pool_threads
                                   60, # keep_alive_time
                                   TimeUnit::SECONDS,
                                   LinkedBlockingQueue.new)
-
 
 total_time = 0.0
 
@@ -44,15 +41,13 @@ num_iterations.times do |i|
   end
 
   # Wait for all threads to complete
-  tasks.each do |t|
-    t.get
-  end
+  tasks.each(&:get)
   t_1 = Time.now
 
-  time_ms = (t_1-t_0) * 1000.0
+  time_ms = (t_1 - t_0) * 1000.0
   puts "TEST #{i}: Time elapsed = #{time_ms}ms"
   total_time +=  time_ms
 end
-executor.shutdown()
+executor.shutdown
 
-puts "Average completion time: #{total_time/num_iterations}"
+puts "Average completion time: #{total_time / num_iterations}"
