@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # Code courtesy of Philip Yousef - http://www.restlessprogrammer.com/2013/02/multi-threading-in-jruby.html
-
+# modified to take parameters.
 num_iterations = ARGV[1].to_i #20
 num_threads = ARGV[0].to_i #4
 
