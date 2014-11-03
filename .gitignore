@@ -8,3 +8,5 @@
 *.toc
 *.fdb_latexmk
 auto
+*.vrb
+*.synctex.gz

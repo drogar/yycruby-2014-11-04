@@ -1,3 +1,4 @@
+%!TEX root = /Users/gilesb/programming/presentations/yycruby-2014-11-04/jruby-presentation.tex
 \usepackage{etex}
 \usepackage[english]{babel}
 % or whatever
@@ -18,6 +19,8 @@
 
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{listings}
+\lstset{language=Ruby}
 \usetikzlibrary{calc,arrows,positioning,shapes.geometric,fit,decorations.markings}
 
 \pgfdeclarelayer{edgelayer}
@@ -78,10 +81,88 @@
 \end{frame}
 
 \section{What is JRuby?}
-\begin{frame}\frametitle{Ruby on JAVA!}
+\begin{frame}\frametitle{Ruby on Java!}
+\begin{itemize}
+  \item It \emph{is} just ruby. Write it. Run it.
+  \item .... but... you \emph{can} call Java.
+  \item .... and... you \emph{can't} call C.
+\end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Why call Java?}
+  \begin{itemize}
+    \item Threads!
+    \item WARs!
+    \item Big conservative companies!
+    \item Swing!
+  \end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Why \emph{not} call Java?}
+  \begin{itemize}
+    \item Context switching (yours - not the computer's).
+    \item JVM startup is a pain (unTDD-like).
+    \item You really really \emph{really} need the C interface.
+  \end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Threads}
+  The dreaded Global Interpreter Lock!
+  \begin{centering}
+  \includegraphics[scale=.5]{diagrams/ruby-gil.png}
+  \end{centering}
+  But... Rubinius does not have a GIL either....
 
+
+{\tiny Diagram from https://www.igvita.com/2008/11/13/concurrency-is-a-myth-in-ruby/}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Thread code - Ruby}
+\begin{lstlisting}
+num_iterations.times do |iter|
+  threads = []
+  t_0 = Time.now
+  (1..num_threads).each do |i|
+    threads << Thread.new(i) do
+      count = 0
+      1_000_000.times { count += 1 }
+    end
+  end
+  threads.each(&:join)
+end
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]\frametitle{Thread code - JRuby - Pg 1}
+\begin{lstlisting}
+class CountMillion
+  include Callable
+  def call
+    count = 0
+    1_000_000.times { count += 1 }
+  end
+end
+executor = ThreadPoolExecutor.new(
+   num_threads, # core_pool_treads
+   num_threads, # max_pool_threads
+   60, # keep_alive_time
+   TimeUnit::SECONDS,
+   LinkedBlockingQueue.new)
+\end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Thread code - JRuby - Pg 2}
+\begin{lstlisting}
+num_iterations.times do |i|
+  tasks = []
+
+  t_0 = Time.now
+  num_threads.times do
+    task = FutureTask.new(CountMillion.new)
+    executor.execute(task)
+    tasks << task
+  end
+
+  # Wait for all threads to complete
+  tasks.each(&:get)
+end
+\end{lstlisting}
+\end{frame}
 \end{document}
 
 
