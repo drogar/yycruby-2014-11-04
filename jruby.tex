@@ -20,6 +20,8 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{listings}
+\usepackage{color}
+
 \lstset{language=Ruby}
 \usetikzlibrary{calc,arrows,positioning,shapes.geometric,fit,decorations.markings}
 
@@ -99,8 +101,9 @@
 \begin{frame}\frametitle{Why \emph{not} call Java?}
   \begin{itemize}
     \item Context switching (yours - not the computer's).
-    \item JVM startup is a pain (unTDD-like).
-    \item You really really \emph{really} need the C interface.
+    \item JVM startup is a pain (unTDD-like). (Spork, NG-Server are answers).
+    \item Tends to lag behind. Current production release is 1.9 compatible. 2.2 coming soonish...
+    \item You really really \emph{really} need the C interface. (Try harder not to :)
   \end{itemize}
 \end{frame}
 \begin{frame}\frametitle{Threads}
@@ -171,9 +174,10 @@ end
 \begin{frame}\frametitle{WARs and BCCs}
   ...or ``How to use Rails in a 6000+ person O\&G company''.
   \begin{itemize}
-    \item JRuby on Rails works. Started using it at 2.x, did some 3, haven't tried 4.
+    \item JRuby on Rails works. Started using it at 2.x, did some 3, other have done 4.
     \item A WAR is a Web ARchive and is how Java Web apps are deployed on a server, e.g. Tomcat.
-    \item \url{github.com/jruby/warbler} will package your app into a warfile
+    \item \url{github.com/jruby/warbler} will package your app into a warfile.
+    \item Can use Trinidad as lightweight option --- one java process, many threads.
   \end{itemize}
   When you are in a large conservative company, all of the above is a GOOD THING!
 \end{frame}
@@ -187,6 +191,31 @@ end
   \end{itemize}
   Of course, must have the capability to get deploy to happen by just supplying a WAR. (Bigger
   companies may insist on building by themselves.)
+\end{frame}
+\begin{frame}\frametitle{Niceties of JRoR}
+  We started with JRoR as it was the only choice --- The nice things about this:
+  \begin{itemize}
+    \item Fast. Speedy. Zoom! (After startup)
+    \item Threads - Had to be a bit careful, but Rails 4 is thread-safe.
+    \item Memory usage is good, scales well.
+  \end{itemize}
+\end{frame}
+\begin{frame}\frametitle{Quotes and resources}
+  On a web application that took advantage of the shared memory capabilities to provide responsive
+  processing:
+  \begin{quote}
+  ``Teams have tried and failed to write an application that can handle the demands of [Cooperative
+    Speculative planning], this [JRuby] application exceeds all of our expectations''
+  \end{quote}
+  Resources:
+  \begin{itemize}
+    \item PragProg: ``Using JRuby'' and ``Deploying with JRuby''.
+    \item \href{https://github.com/jruby/jruby/wiki}{\textcolor{blue}{The wiki}} and
+      \href{http://jruby.org}{\textcolor{blue}{the JRuby website}}.
+    \item Twitter: \href{https://twitter.com/headius}{\textcolor{blue}{@headius}},
+      \href{https://twitter.com/tom\_enebo}{\textcolor{blue}{@tom\_enebo}},
+      \href{https://twitter.com/jruby}{\textcolor{blue}{@jruby}}.
+  \end{itemize}
 \end{frame}
 \begin{frame}\frametitle{and finally, swing, swing, swing}
   Why? (no, really, why?)
@@ -214,6 +243,7 @@ end
   {\Huge DEMO}
   \end{center}
 \end{frame}
+
 \end{document}
 
 
